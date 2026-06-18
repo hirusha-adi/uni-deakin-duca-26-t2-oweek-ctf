@@ -1,10 +1,10 @@
 <!-- note: the authenticate.js file is what handles the login feature -->
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Secure Login Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DUCA - Hardcoded Passwords</title>
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
@@ -13,71 +13,134 @@
     >
     <link rel="stylesheet" href="styles.css">
 </head>
-<body class="login-page">
-
+<body>
     <main class="container py-5">
-        <section class="mx-auto card shadow-lg border-0 login-card">
-            <div class="card-body p-4 p-md-5 text-center">
-                <img src="logo.png" alt="Logo" class="logo mb-3">
-                <h1 class="h3 mb-2">Super Secure Login Page</h1>
-                <p class="text-muted mb-4">Enter your credentials to continue.</p>
+        <div class="page-shell mx-auto">
+            <header class="text-center mb-4">
+                <div class="eyebrow mb-2">DUCA beginner CTF</div>
+                <h1 class="h2 fw-bold mb-2">Hardcoded Passwords</h1>
+                <p class="text-secondary mb-0">
+                    The login looks secure—but the browser already has everything it needs.
+                </p>
+            </header>
 
-                <!-- note: the authenticate.js file is what handles the login feature -->
-                <form id="loginForm" class="text-start">
-                    <div class="mb-3">
-                        <label for="username" class="form-label">Username</label>
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="username"
-                            placeholder="admin"
-                            required
-                        >
+            <section class="terminal" aria-label="Hardcoded password login challenge">
+                <div class="terminal-bar">
+                    <div class="window-dots" aria-hidden="true">
+                        <span class="window-dot"></span>
+                        <span class="window-dot"></span>
+                        <span class="window-dot"></span>
                     </div>
-                    <div class="mb-4">
-                        <label for="password" class="form-label">Password</label>
-                        <!-- note: see authenticate.js is what handles the login feature -->
-                        <input
-                            type="text"
-                            class="form-control"
-                            id="password"
-                            placeholder="Enter password"
-                            required
-                        >
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Log In</button>
-                </form>
+                    <p class="terminal-title">guest@duca:~/login</p>
+                </div>
 
-                <p id="loginMessage" class="mt-4 mb-0 fw-semibold" aria-live="polite"></p>
+                <div class="terminal-body">
+                    <!-- note: the authenticate.js file is what handles the login feature -->
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="username" class="terminal-label d-block mb-2">
+                                Username
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control terminal-input"
+                                id="username"
+                                placeholder="admin"
+                                autocomplete="username"
+                                required
+                            >
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="terminal-label d-block mb-2">
+                                Password
+                            </label>
+                            <!-- note: see authenticate.js is what handles the login feature -->
+                            <input
+                                type="text"
+                                class="form-control terminal-input"
+                                id="password"
+                                placeholder="Enter password"
+                                autocomplete="current-password"
+                                required
+                            >
+                        </div>
+
+                        <button type="submit" class="btn run-button w-100 py-2">
+                            Log In
+                        </button>
+                    </form>
+
+                    <p
+                        id="loginMessage"
+                        class="login-message mt-4 mb-0"
+                        aria-live="polite"
+                    ></p>
+                </div>
+
+                <div class="challenge-panel">
+                    <div class="terminal-label mb-2">Authentication status</div>
+                    <div>
+                        <span class="state-key">user:</span>
+                        admin
+                    </div>
+                    <div>
+                        <span class="state-key">access:</span>
+                        <span id="accessValue">locked</span>
+                    </div>
+                </div>
+            </section>
+
+            <div class="info-card p-3 mt-3">
+                <strong>Challenge goal:</strong> Find the password hidden in the client-side
+                application and log in as <code>admin</code>.
             </div>
-        </section>
 
-        <details class="hint-dropdown mx-auto mt-3">
-            <summary>Need a hint?</summary>
-            <p class="mb-0 mt-2">Right click and inspect if you get stuck.</p>
-        </details>
+            <details class="hint-dropdown mt-3">
+                <summary>Need a hint?</summary>
+                <p class="mb-0 mt-2">
+                    Right click and inspect the page source if you get stuck. Pay attention to
+                    which JavaScript file handles authentication.
+                </p>
+            </details>
+
+            <footer class="text-center mt-4">
+                <a
+                    class="solution-link"
+                    href="https://github.com/hirusha-adi/uni-deakin-duca-26-t1-ctf/blob/main/README.md"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    View solution
+                </a>
+            </footer>
+        </div>
     </main>
 
-    <footer class="solution-footer pb-4">
-        <a
-            href="https://github.com/hirusha-adi/uni-deakin-duca-26-t1-ctf/blob/main/README.md"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            View solution
-        </a>
-    </footer>
-
-    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div
+        class="modal fade"
+        id="successModal"
+        tabindex="-1"
+        aria-labelledby="successModalLabel"
+        aria-hidden="true"
+    >
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow">
+            <div class="modal-content success-modal shadow">
                 <div class="modal-header">
                     <h2 class="modal-title fs-5" id="successModalLabel">Login success!</h2>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
                 </div>
-                <div class="modal-body text-center">
-                    <img src="logo.png" alt="Logo" class="modal-logo mb-3">
-                    Authentication successful. Welcome, admin!
+                <div class="modal-body py-4 text-center">
+                    <div class="success-icon mb-3" aria-hidden="true">✓</div>
+                    <p class="fw-bold mb-1" style="color: var(--green);">
+                        [CHALLENGE COMPLETE]
+                    </p>
+                    <p class="mb-0">Authentication successful. Welcome, admin!</p>
                 </div>
             </div>
         </div>

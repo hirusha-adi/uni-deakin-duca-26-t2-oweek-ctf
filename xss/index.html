@@ -4,100 +4,323 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>DUCA - XSS Playground</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
   <style>
+    :root {
+      --page-bg: #08111f;
+      --terminal-bg: #0b1220;
+      --terminal-panel: #111c2e;
+      --terminal-border: #29364a;
+      --terminal-text: #dce7f5;
+      --muted: #8da1ba;
+      --green: #55e6a5;
+      --red: #ff6b7a;
+      --amber: #ffc857;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      background: #f8f9fa;
+      min-height: 100vh;
+      color: #e7eef8;
+      background:
+        radial-gradient(circle at 20% 10%, rgba(36, 100, 166, 0.24), transparent 32rem),
+        linear-gradient(145deg, #060b14 0%, var(--page-bg) 60%, #0c1727 100%);
+      font-family: "Segoe UI", sans-serif;
     }
-    .logo {
-      width: 96px;
-      height: 96px;
-      object-fit: contain;
+
+    .page-shell {
+      width: min(920px, 100%);
     }
+
+    .eyebrow {
+      color: var(--green);
+      font-family: "Courier New", monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .terminal {
+      overflow: hidden;
+      background: var(--terminal-bg);
+      border: 1px solid var(--terminal-border);
+      border-radius: 16px;
+      box-shadow: 0 26px 80px rgba(0, 0, 0, 0.42);
+    }
+
+    .terminal-bar {
+      display: flex;
+      align-items: center;
+      min-height: 48px;
+      padding: 0.75rem 1rem;
+      background: #111a29;
+      border-bottom: 1px solid var(--terminal-border);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .window-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .window-dot:nth-child(1) {
+      background: #ff5f57;
+    }
+
+    .window-dot:nth-child(2) {
+      background: #febc2e;
+    }
+
+    .window-dot:nth-child(3) {
+      background: #28c840;
+    }
+
+    .terminal-title {
+      margin: 0 auto;
+      color: var(--muted);
+      font: 0.82rem "Courier New", monospace;
+      transform: translateX(-24px);
+    }
+
+    .terminal-body {
+      padding: 1.4rem;
+      color: var(--terminal-text);
+    }
+
+    .terminal-label,
+    .state-heading {
+      color: var(--muted);
+      font: 0.82rem "Courier New", monospace;
+    }
+
+    .terminal-input {
+      min-width: 0;
+      color: #fff;
+      caret-color: var(--green);
+      background: transparent;
+      border: 0;
+      border-bottom: 1px solid #40516a;
+      border-radius: 0;
+      font: 0.95rem "Courier New", monospace;
+    }
+
+    .terminal-input:focus {
+      color: #fff;
+      background: transparent;
+      border-bottom-color: var(--green);
+      box-shadow: 0 1px 0 var(--green);
+    }
+
+    .terminal-input::placeholder {
+      color: #687b93;
+    }
+
+    .run-button {
+      color: #06140e;
+      background: var(--green);
+      border: 0;
+      font-weight: 700;
+    }
+
+    .run-button:hover,
+    .run-button:focus {
+      color: #06140e;
+      background: #79edba;
+    }
+
     .payload-box {
-      min-height: 64px;
-      border: 1px dashed #adb5bd;
-      border-radius: 0.5rem;
-      background: #fff;
-      padding: 0.75rem;
+      min-height: 72px;
+      padding: 0.85rem;
+      color: var(--terminal-text);
+      background: #08111d;
+      border: 1px dashed #40516a;
+      border-radius: 8px;
+      overflow-wrap: anywhere;
     }
+
+    .state-panel {
+      padding: 1rem;
+      color: var(--terminal-text);
+      background: var(--terminal-panel);
+      border: 1px solid var(--terminal-border);
+      border-radius: 8px;
+      font-family: "Courier New", monospace;
+    }
+
+    .state-key {
+      color: var(--green);
+    }
+
+    .admin-message {
+      color: var(--green);
+      background: rgba(85, 230, 165, 0.09);
+      border: 1px solid rgba(85, 230, 165, 0.42);
+      border-radius: 8px;
+    }
+
+    .examples-panel {
+      padding: 1.25rem;
+      background: var(--terminal-panel);
+      border-top: 1px solid var(--terminal-border);
+    }
+
     code {
-      background: #f1f3f5;
-      padding: 0.1rem 0.35rem;
-      border-radius: 0.25rem;
+      color: var(--amber);
+      background: #08111d;
+      border: 1px solid #29364a;
+      border-radius: 5px;
+      padding: 0.12rem 0.35rem;
+    }
+
+    .info-card,
+    .hint-dropdown {
+      color: #c9d6e6;
+      background: rgba(17, 28, 46, 0.82);
+      border: 1px solid var(--terminal-border);
+      border-radius: 12px;
+    }
+
+    .hint-dropdown {
+      padding: 0.9rem 1rem;
+    }
+
+    .hint-dropdown summary {
+      color: var(--amber);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .solution-link {
+      color: #8abfff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .solution-link:hover {
+      color: #b6d7ff;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 720px) {
+      .terminal-body {
+        padding: 1rem;
+      }
+
+      .input-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container py-5">
-    <div class="text-center mb-4">
-      <img src="logo.png" alt="CTF Logo" class="logo mb-3">
-      <h1 class="h3 mb-2">DUCA - XSS Playground</h1>
-      <p class="text-muted mb-0">Enter your name below. This app is intentionally vulnerable.</p>
-    </div>
+  <main class="container py-5">
+    <div class="page-shell mx-auto">
+      <header class="text-center mb-4">
+        <div class="eyebrow mb-2">DUCA beginner CTF</div>
+        <h1 class="h2 fw-bold mb-2">XSS Playground</h1>
+        <p class="text-secondary mb-0">
+          Enter your name below. This application is intentionally vulnerable.
+        </p>
+      </header>
 
-    <div class="card shadow-sm">
-      <div class="card-body">
-        <label for="nameInput" class="form-label">Enter your name</label>
-        <div class="input-group mb-3">
-          <input id="nameInput" type="text" class="form-control" placeholder="Try: user">
-          <button id="submitBtn" class="btn btn-primary" type="button">Submit</button>
+      <section class="terminal" aria-label="Cross-site scripting challenge">
+        <div class="terminal-bar">
+          <div class="window-dots" aria-hidden="true">
+            <span class="window-dot"></span>
+            <span class="window-dot"></span>
+            <span class="window-dot"></span>
+          </div>
+          <p class="terminal-title">guest@duca:~/xss</p>
         </div>
 
-        <div class="mb-3">
-          <div class="fw-semibold mb-1">Rendered output (unsafe):</div>
-          <div id="renderedName" class="payload-box"></div>
+        <div class="terminal-body">
+          <label for="nameInput" class="terminal-label d-block mb-2">
+            Enter your name
+          </label>
+          <div class="input-row d-flex gap-2 mb-4">
+            <input
+              id="nameInput"
+              type="text"
+              class="form-control terminal-input"
+              placeholder="Try: user"
+              spellcheck="false"
+            >
+            <button id="submitBtn" class="btn run-button px-4" type="button">Submit</button>
+          </div>
+
+          <div class="mb-4">
+            <div class="state-heading mb-2">Rendered output (unsafe)</div>
+            <div id="renderedName" class="payload-box"></div>
+          </div>
+
+          <div class="state-heading mb-2">Values stored in the browser</div>
+          <div class="state-panel">
+            <div><span class="state-key">username:</span> <span id="usernameValue">user</span></div>
+            <div><span class="state-key">isAdmin:</span> <span id="adminValue">false</span></div>
+          </div>
+
+          <div id="adminMessage" class="admin-message d-none mt-3 p-3 fw-bold" role="alert">
+            [CHALLENGE COMPLETE] You are now Admin!
+          </div>
         </div>
 
-        <div class="fw-semibold mb-1">Values stored in the browser:</div>
-        <div class="bg-light border rounded p-3">
-          <div><strong>username:</strong> <span id="usernameValue">user</span></div>
-          <div><strong>isAdmin:</strong> <span id="adminValue">false</span></div>
+        <div class="examples-panel">
+          <p class="state-heading mb-2">Example payloads</p>
+          <ul class="mb-0 ps-4">
+            <li class="mb-2"><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></li>
+            <li><code>&lt;script&gt;alert(isAdmin)&lt;/script&gt;</code></li>
+          </ul>
         </div>
+      </section>
 
-        <div id="adminMessage" class="alert alert-success mt-3 d-none" role="alert">
-          You are now Admin!
-        </div>
-
-        <hr>
-
-        <p class="mb-2"><strong>Example payloads:</strong></p>
-        <ul class="mb-0">
-          <li><code>&lt;script&gt;alert(1)&lt;/script&gt;</code></li>
-          <li><code>&lt;script&gt;alert(isAdmin)&lt;/script&gt;</code></li>
-        </ul>
+      <div class="info-card p-3 mt-3">
+        <strong>Challenge goal:</strong> Use the unsafe name input to change
+        <code>isAdmin</code> from <code>false</code> to <code>true</code>.
       </div>
-    </div>
 
-    <div class="mt-4">
-      <button class="btn btn-outline-secondary mb-2 w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#hintOne" aria-expanded="false" aria-controls="hintOne">
-        Hint 1 (Click to expand)
-      </button>
-      <div class="collapse" id="hintOne">
-        <div class="card card-body mb-3">
-          If your input is treated as HTML/JS instead of plain text, tags like <code>&lt;script&gt;</code> can run.
-        </div>
-      </div>
+      <details class="hint-dropdown mt-3">
+        <summary>Hint 1</summary>
+        <p class="mb-0 mt-2">
+          If input is treated as HTML and JavaScript instead of plain text,
+          tags like <code>&lt;script&gt;</code> can run.
+        </p>
+      </details>
 
-      <button class="btn btn-outline-secondary mb-2 w-100 text-start" type="button" data-bs-toggle="collapse" data-bs-target="#hintTwo" aria-expanded="false" aria-controls="hintTwo">
-        Hint 2 (Click to expand)
-      </button>
-      <div class="collapse" id="hintTwo">
-        <div class="card card-body">
-          Look at the variable names shown on screen. Can you change <code>isAdmin</code> from <code>false</code> to <code>true</code>?
-        </div>
-      </div>
-    </div>
+      <details class="hint-dropdown mt-3">
+        <summary>Hint 2</summary>
+        <p class="mb-0 mt-2">
+          Look at the variable names shown on screen. Can you change
+          <code>isAdmin</code> from <code>false</code> to <code>true</code>?
+        </p>
+      </details>
 
-    <div class="text-center mt-5">
-      <a href="https://github.com/hirusha-adi/uni-deakin-duca-26-t1-ctf-xss/blob/main/README.md" target="_blank" rel="noopener noreferrer">
-        View solution
-      </a>
+      <footer class="text-center mt-4">
+        <a
+          class="solution-link"
+          href="https://github.com/hirusha-adi/uni-deakin-duca-26-t1-ctf-xss/blob/main/README.md"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View solution
+        </a>
+      </footer>
     </div>
-  </div>
+  </main>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     let username = "user";
     let isAdmin = false;
@@ -133,8 +356,8 @@
       refreshState();
 
       $("#submitBtn").on("click", runChallenge);
-      $("#nameInput").on("keydown", function (e) {
-        if (e.key === "Enter") {
+      $("#nameInput").on("keydown", function (event) {
+        if (event.key === "Enter") {
           runChallenge();
         }
       });
