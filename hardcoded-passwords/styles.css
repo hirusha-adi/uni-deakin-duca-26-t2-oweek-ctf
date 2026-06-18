@@ -195,6 +195,34 @@ body {
     text-decoration: underline;
 }
 
+.brand-footer {
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--terminal-border);
+}
+
+.brand-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.25rem;
+}
+
+.brand-logo {
+    display: block;
+    object-fit: contain;
+}
+
+.brand-logo-duca {
+    width: 72px;
+    height: 72px;
+}
+
+.brand-logo-dsec {
+    width: 130px;
+    height: 72px;
+}
+
 .success-modal {
     color: var(--terminal-text);
     background: var(--terminal-panel);

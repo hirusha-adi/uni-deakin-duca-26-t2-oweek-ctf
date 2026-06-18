@@ -213,6 +213,34 @@
       text-decoration: underline;
     }
 
+    .brand-footer {
+      padding-top: 1.25rem;
+      border-top: 1px solid var(--terminal-border);
+    }
+
+    .brand-logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 1.25rem;
+    }
+
+    .brand-logo {
+      display: block;
+      object-fit: contain;
+    }
+
+    .brand-logo-duca {
+      width: 72px;
+      height: 72px;
+    }
+
+    .brand-logo-dsec {
+      width: 130px;
+      height: 72px;
+    }
+
     @media (max-width: 720px) {
       .terminal-body {
         padding: 1rem;
@@ -307,7 +335,7 @@
         </p>
       </details>
 
-      <footer class="text-center mt-4">
+      <footer class="brand-footer text-center mt-4">
         <a
           class="solution-link"
           href="https://github.com/hirusha-adi/uni-deakin-duca-26-t1-ctf-xss/blob/main/README.md"
@@ -316,6 +344,18 @@
         >
           View solution
         </a>
+        <div class="brand-logos" aria-label="Event organisers">
+          <img
+            class="brand-logo brand-logo-duca"
+            src="../_common/duca.png"
+            alt="Deakin University Cybersecurity Association"
+          >
+          <img
+            class="brand-logo brand-logo-dsec"
+            src="../_common/dsec.png"
+            alt="Deakin Software Engineering Club"
+          >
+        </div>
       </footer>
     </div>
   </main>
