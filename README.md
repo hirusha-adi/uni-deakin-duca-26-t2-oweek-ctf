@@ -43,9 +43,9 @@ python3 -m http.server 8000
 
 Then visit:
 
-- <http://localhost:8000/buffer-overflow/>
-- <http://localhost:8000/xss/>
-- <http://localhost:8000/hardcoded-passwords/>
+- <https://oweek-ctf.duca.au/buffer-overflow/>
+- <https://oweek-ctf.duca.au/xss/>
+- <https://oweek-ctf.duca.au/hardcoded-passwords/>
 
 An internet connection is required for the CDN-hosted Bootstrap and jQuery dependencies.
 
